@@ -22,7 +22,7 @@ window.Event = new Vue;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 Vue.component('vue-layout', require('./views/Layout.vue'));
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+
 
 const app = new Vue({
     el: '#app',

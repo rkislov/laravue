@@ -14,8 +14,20 @@ let routes = [
         component: require('./views/Login.vue')
     },
     {
-        path: '/dashboard',
+        path: '/my_tickets',
         component: require('./views/Dashboard.vue'),
+        meta:{requireAuth: true}
+    },
+
+    {
+        path: '/new_ticket',
+        component: require('./views/tickets/add_ticket.vue'),
+        meta:{requireAuth: true}
+    },
+    {
+        path: '/ticket',
+        name: 'ticket',
+        component: require('./views/tickets/show.vue'),
         meta:{requireAuth: true}
     },
 ];

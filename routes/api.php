@@ -20,4 +20,9 @@ Route::post('/login', 'API\AuthController@login');
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', 'API\AuthController@logout');
     Route::post('/get-user', 'API\AuthController@getUser');
+    Route::get('/categories', 'API\CategoryController@all');
+    Route::post('/new_ticket_store', 'API\TicketController@create');
+    Route::get('/tickets/{id}', 'API\TicketController@userTickets');
+    Route::get('/ticket/{id}', 'API\TicketController@showTicket');
+
 });

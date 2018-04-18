@@ -4,11 +4,8 @@ class Auth {
 
         let userData = window.localStorage.getItem('user');
         this.user = userData ? JSON.parse(userData) : null;
-
-        if(this.token) {
-            axios.defaults.headers.common['Authorization'] = 'Bearer' + this.token;
-
-            this.getUser();
+        if (this.token) {
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token;
         }
     }
 
@@ -27,6 +24,7 @@ class Auth {
     check() {
         return !! this.token;
     }
+
     logout(){
         window.localStorage.setItem('token', '');
         window.localStorage.setItem('user', '');
@@ -44,6 +42,12 @@ class Auth {
                 this.user = user;
             });
     }
+}
+
+if(this.token) {
+    axios.defaults.headers.common['Authorization'] = 'Bearer' + this.token;
+
+    this.getUser();
 }
 
 export default Auth;
