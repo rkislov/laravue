@@ -21,41 +21,44 @@
                     </div>
                     <hr>
 
-                    <div class="comment">
-                        <!--@foreach($ticket->comments as $comment)-->
-                        <!--<div class="panel panel-@if($ticket->user->id === $comment->user_id){{"default"}}@else{{"success"}}@endif">-->
-                        <!--<div class="panel panel-heading">-->
-                            <!--{{$comment->user->name}}-->
-                            <!--<span class="pull-right">{{$comment->created_at->format('d.m.Y')}} г.</span>-->
-                        <!--</div>-->
-                        <!--<div class="panel panel-body">-->
-                            <!--{{$comment->comment}}-->
-                        <!--</div>-->
-                    <!--</div>-->
+                    <div class="comment" v-for="(item, index) in comments" :key="index">
+                        <!--<div class="panel panel-success">-->
+                        <div  class="panel panel-default">
+                            <div class="panel panel-heading">
+                                {{item.user.name}}
 
-                    <!--@endforeach-->
-                </div>
-                <!--@if ($ticket->status !== 'Закрыта')-->
-                <div class="comment-form">
-                    <form action="#" class="form" id="comment-form" @submit.prevent="createNewComment()">
+                                <span class="pull-right">{{item.created_at | formatDate}} г.</span>
+                            </div>
+                            <div class="panel panel-body">
+                                {{item.comment}}
+                            </div>
 
 
-                        <div class="form-group">
-                            <textarea rows="5" id="comment" class="form-control" name="comment" v-model="comment"></textarea>
+
 
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Отправить</button>
-                        </div>
-                    </form>
+                    <div class="comment-form">
+                        <form action="#" class="form" id="comment-form" @submit.prevent="createNewComment()">
 
+
+                            <div class="form-group">
+                                <textarea rows="5" id="comment" class="form-control" name="comment" v-model="comment"></textarea>
+
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Отправить</button>
+                            </div>
+                        </form>
+
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
-    </div>
+
 </template>
 
 <script>
@@ -66,8 +69,11 @@
                category: [],
                comments:[],
                comment: '',
+               ticket_id: this.$route.params.id,
+
            }
        },
+
         mounted(){
             this.fetchTicket();
             this.fetchComments();
@@ -78,17 +84,19 @@
                    .then((resp) => {
                   this.ticket = resp.data;
                   this.category = this.ticket.category;
-                  this.comments = this.ticket.comments;
+                 // this.comments = this.ticket.comments;
                });
            },
 
            createNewComment(){
+               let user = window.localStorage.getItem('user');
+               user = JSON.parse(user);
                let data = {
                    comment: this.comment,
-                   ticket_id: this.$route.params.id,
-                   user_id: this.user.id,
+                   ticket_id: this.ticket_id,
+                   user_id: user.id,
                };
-               axios.post('api/comment'.data)
+               axios.post('api/new_comment', data)
                    .then(({data})=>{
                        this.comment = '';
 
@@ -100,7 +108,10 @@
                    })
            },
             fetchComments(){
-
+                axios.get('api/comments/'+ this.ticket_id)
+                    .then((resp)=>{
+                            this.comments = resp.data;
+                    })
             }
 
         }

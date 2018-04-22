@@ -37,4 +37,13 @@ class TicketController extends Controller
 
         return response()->json($ticket);
     }
+
+    public function closeTicket($id)
+    {
+        $ticket = Ticket::where('id',$id)->firstOrFail();
+        $ticket->status = 'Закрыта';
+        $ticket->save();
+
+        return response()->json(['status'=>201]);
+    }
 }

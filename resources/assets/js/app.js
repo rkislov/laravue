@@ -8,14 +8,21 @@ import VueRouter from 'vue-router';
 import router from './routes';
 import Auth from './auth';
 import Api from './api';
+import moment from 'moment';
 require('./bootstrap');
+
+
 
 window.Vue = require('vue');
 window.api = new Api();
 Vue.use(VueRouter);
 window.auth = new Auth();
 window.Event = new Vue;
-
+Vue.filter('formatDate', function(value) {
+    if (value) {
+        return moment(String(value)).format('DD.mm.YYYY');
+    }
+});
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -26,5 +33,6 @@ Vue.component('vue-layout', require('./views/Layout.vue'));
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+
 });

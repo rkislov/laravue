@@ -22,7 +22,7 @@ class AuthController extends Controller
     }
     public function login()
     {
-        $user = User::whereEmail(request('username'))->first();
+        $user = utf8_encode(User::whereEmail(request('username'))->first());
 
         if(!$user){
             return response()->json([
@@ -61,7 +61,7 @@ class AuthController extends Controller
            'token'=>$data->access_token,
            'user'=> $user,
            'status'=> 200
-        ]);
+        ],['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
     }
 
     public function logout()

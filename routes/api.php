@@ -22,7 +22,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/get-user', 'API\AuthController@getUser');
     Route::get('/categories', 'API\CategoryController@all');
     Route::post('/new_ticket_store', 'API\TicketController@create');
+    Route::post('/new_comment', 'API\CommentController@create');
+    Route::get('/comments/{id}', 'API\CommentController@ticketComments');
     Route::get('/tickets/{id}', 'API\TicketController@userTickets');
     Route::get('/ticket/{id}', 'API\TicketController@showTicket');
+    Route::put('/closeticket/{id}', 'API\TicketController@closeTicket');
+
 
 });

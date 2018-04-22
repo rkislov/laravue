@@ -21,6 +21,8 @@
         "vue-router": "^3.0.1"
     },
     "dependencies": {
-        "npm": "^5.8.0"
+        "moment": "^2.22.1",
+        "npm": "^5.8.0",
+        "vuejs-paginate": "^1.9.0"
     }
 }

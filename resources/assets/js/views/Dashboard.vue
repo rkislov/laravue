@@ -41,11 +41,9 @@
                                 {{ticket.updated_at}}
                             </td>
                             <td style="text-align: center;">
-                                <a v-if="ticket.status === 'Открыта'" href="#" class=""><span class="fa fa-comments" style="color:black"></span></a>
+                                <router-link :to="{name: 'ticket', params: {id: ticket.id}}" v-if="ticket.status === 'Открыта'" class=""><span class="fa fa-eye" style="color:darkcyan"></span></router-link>
 
-
-                                <a v-if="ticket.status === 'Открыта'" href="#" class=""><span class="fa fa-eye" style="color:black"></span></a>
-                                <a v-if="ticket.status === 'Открыта'"  href="#" class=""><span class="fa fa-check" style="color:green"></span></a>
+                                <a v-if="ticket.status === 'Открыта'"  href="#" class="" @click.prevent="closeTicket(ticket.id)"><span class="fa fa-check" style="color:green"></span></a>
 
 
                             </td>
@@ -54,7 +52,13 @@
 
                         </tbody>
                     </table>
-
+                    <!--<paginate-->
+                            <!--:page-count="pageCount"-->
+                            <!--:click-handler="fetch"-->
+                            <!--:prev-text="'Prev'"-->
+                            <!--:next-text="'Next'"-->
+                            <!--:container-class="'pagination'">-->
+                    <!--</paginate>-->
 
                 </div>
             </div>
@@ -66,8 +70,10 @@
     export default {
         data() {
             return {
-                tickets: [],
 
+                authenticated: auth.check(),
+                user: auth.user,
+                tickets: [],
             }
         },
 
@@ -77,14 +83,32 @@
         methods: {
             fetchTickets()
             {
-                let user = window.localStorage.getItem('user');
-                user = JSON.parse(user);
-                axios.get('api/tickets/'+ user.id).then((resp) => {
+
+                 let iuser = window.localStorage.getItem('user');
+                 iuser = JSON.parse(iuser);
+                axios.get('api/tickets/'+ iuser.id).then((resp) => {
                     this.tickets = resp.data;
-                });
+                })
+                    .catch(({response})=>{
+                        alert(response.data.message);
+                    });
 
             },
+            closeTicket(id)
+            {
 
+                axios.put('api/closeticket/'+id).then((resp)=>{
+                    this.fetchTickets();
+
+                                   })
+
+
+                    .catch(({response})=>{
+                        alert(response.data.message);
+                    })
+
+
+            }
         }
     }
 </script>
